@@ -1,0 +1,136 @@
+{
+  "nav": {
+    "home": "Home",
+    "howItWorks": "How It Works",
+    "pricing": "Pricing",
+    "plans": "Plans",
+    "about": "About",
+    "blog": "Blog",
+    "contact": "Contact",
+    "book": "Book a Session",
+    "getStarted": "Get Started",
+    "signUp": "Sign Up",
+    "signIn": "Login",
+    "logout": "Logout",
+    "dashboard": "Dashboard",
+    "bookings": "Sessions"
+  },
+  "hero": {
+    "badge": "Professional Online Coaching",
+    "headline1": "Your Growth",
+    "headline2": "starts here",
+    "headline3": "Choose your plan",
+    "subtitle": "Pick a plan that fits your goals. Get access to coaching, sessions, and support designed to transform your life.",
+    "ctaPrimary": "View Plans",
+    "ctaSecondary": "Get Started",
+    "trustedBy": "Trusted by",
+    "users": "clients"
+  },
+  "about": {
+    "title": "About Your Coach",
+    "experience": "Years of Experience",
+    "certifications": "Certifications",
+    "bio": "Professional coach dedicated to your growth and success."
+  },
+  "services": {
+    "title": "Programs & Services",
+    "subtitle": "Choose the plan that fits your goals",
+    "price": "Price",
+    "duration": "Duration",
+    "typeSubscription": "Subscription",
+    "typeOneTime": "One-time",
+    "bookNow": "Book Now",
+    "from": "From"
+  },
+  "transformation": {
+    "title": "Transformation & Results",
+    "subtitle": "Real progress from real coaching"
+  },
+  "testimonials": {
+    "title": "What Clients Say",
+    "subtitle": "Success stories from our community"
+  },
+  "howItWorks": {
+    "badge": "Simple Process",
+    "title1": "Three steps to",
+    "title2": "your transformation",
+    "subtitle": "Choose your plan, book a session, and start your journey.",
+    "step1Title": "Choose a Plan",
+    "step1Desc": "Select the program that fits your goals",
+    "step2Title": "Book Your Session",
+    "step2Desc": "Pick a date and time that works for you",
+    "step3Title": "Start Coaching",
+    "step3Desc": "Join your session and begin your journey"
+  },
+  "pricing": {
+    "badge": "Simple Pricing",
+    "title1": "Choose your",
+    "title2": "plan",
+    "chooseYourPlan": "Choose Your Plan",
+    "subtitle": "Transparent pricing. No hidden fees. Pick a plan and get started.",
+    "perMonth": "/month",
+    "perSession": "/session"
+  },
+  "booking": {
+    "title": "Book a Session",
+    "selectPlan": "Select Plan",
+    "selectDate": "Select Date",
+    "confirm": "Confirm Booking",
+    "success": "Booking confirmed!"
+  },
+  "sessions": {
+    "title": "Book a Session",
+    "subtitle": "Need a one-on-one session? Book a time that works for you and meet with your coach.",
+    "cta": "Book a Session"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Quick answers to common questions",
+    "q1": "How do I book a session?",
+    "a1": "Choose a plan, pick a date and time, and confirm your booking. You can pay online via our secure payment.",
+    "q2": "What is your cancellation policy?",
+    "a2": "You can reschedule or cancel at least 24 hours before your session. Contact us for any changes.",
+    "q3": "Do you offer group coaching?",
+    "a3": "Yes, we have plans for both one-on-one and group sessions. Check our Programs section for details."
+  },
+  "cta": {
+    "headline1": "Ready to",
+    "headline2": "find your plan?",
+    "subtitle": "Join 1,200+ clients who transformed their growth.",
+    "button": "View Plans"
+  },
+  "contact": {
+    "title": "Get in Touch",
+    "subtitle": "We'd love to hear from you",
+    "email": "Email",
+    "phone": "Phone",
+    "send": "Send Message"
+  },
+  "footer": {
+    "tagline": "Professional online coaching for your growth.",
+    "product": "Product",
+    "support": "Support",
+    "legal": "Legal",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "copyright": "All rights reserved."
+  },
+  "admin": {
+    "dashboard": "Dashboard",
+    "users": "Users",
+    "plans": "Plans",
+    "bookings": "Sessions",
+    "payments": "Payments",
+    "blog": "Blog",
+    "testimonials": "Testimonials",
+    "settings": "Settings",
+    "totalUsers": "Total Users",
+    "totalPlans": "Active Plans",
+    "totalBookings": "Sessions",
+    "totalRevenue": "Revenue",
+    "quickLinks": "Quick links",
+    "managePlans": "Manage Plans",
+    "viewBookings": "View Sessions",
+    "transformations": "Transformations"
+  }
+}

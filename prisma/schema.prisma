@@ -1,0 +1,234 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(cuid())
+  clerkId     String   @unique
+  email       String   @unique
+  firstName   String?
+  lastName    String?
+  phone       String?
+  isSuspended Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  bookings     Booking[]
+  payments      Payment[]
+  subscriptions Subscription[]
+
+  @@map("users")
+}
+
+model Plan {
+  id            String    @id @default(cuid())
+  titleAr       String
+  titleEn       String
+  descriptionAr String   @db.Text
+  descriptionEn String   @db.Text
+  price         Decimal  @db.Decimal(10, 2)
+  duration      String   // e.g. "30 min", "1 hour", "1 month"
+  type          PlanType
+  isActive      Boolean  @default(true)
+  imageUrl      String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  bookings      Booking[]
+  subscriptions Subscription[]
+  features      PlanFeature[]
+
+  @@map("plans")
+}
+
+model PlanFeature {
+  id        String   @id @default(cuid())
+  planId    String
+  titleAr   String
+  titleEn   String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  plan Plan @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@index([planId, order])
+  @@map("plan_features")
+}
+
+enum PlanType {
+  SUBSCRIPTION
+  ONE_TIME
+}
+
+model Booking {
+  id        String        @id @default(cuid())
+  date      DateTime
+  time      String
+  duration  Int           @default(30)
+  status    BookingStatus @default(PENDING)
+  notes     String?       @db.Text
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  userId String
+  planId String
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan    Plan     @relation(fields: [planId], references: [id], onDelete: Restrict)
+  payment Payment? // reverse relation: Payment.bookingId
+
+  @@index([status])
+  @@index([date])
+  @@map("bookings")
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+model Payment {
+  id                   String        @id @default(cuid())
+  amount               Decimal       @db.Decimal(10, 2)
+  currency             String        @default("EGP")
+  status               PaymentStatus @default(PENDING)
+  paymobTransactionId  String?
+  paymobOrderId        String?
+  metadata             Json?
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+
+  userId         String
+  bookingId      String?   @unique
+  subscriptionId String?
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  booking      Booking?      @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  subscription Subscription? @relation(fields: [subscriptionId], references: [id], onDelete: SetNull)
+
+  @@index([createdAt])
+  @@index([status])
+  @@map("payments")
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+}
+
+model Subscription {
+  id        String             @id @default(cuid())
+  status    SubscriptionStatus @default(ACTIVE)
+  startDate DateTime
+  endDate   DateTime?
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+
+  userId String
+  planId String
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan    Plan     @relation(fields: [planId], references: [id], onDelete: Restrict)
+  payments Payment[]
+
+  @@map("subscriptions")
+}
+
+enum SubscriptionStatus {
+  PENDING
+  ACTIVE
+  CANCELLED
+  EXPIRED
+}
+
+model BlogPost {
+  id                String        @id @default(cuid())
+  titleAr           String
+  titleEn           String
+  slug              String        @unique
+  contentAr         String       @db.Text
+  contentEn         String       @db.Text
+  excerptAr        String?      @db.Text
+  excerptEn         String?      @db.Text
+  metaTitleAr       String?
+  metaTitleEn       String?
+  metaDescriptionAr String?      @db.Text
+  metaDescriptionEn String?      @db.Text
+  publishedAt       DateTime?
+  status            BlogPostStatus @default(DRAFT)
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  @@index([slug])
+  @@index([status])
+  @@map("blog_posts")
+}
+
+enum BlogPostStatus {
+  DRAFT
+  PUBLISHED
+}
+
+model Testimonial {
+  id           String   @id @default(cuid())
+  authorNameAr String?
+  authorNameEn String?
+  contentAr    String   @db.Text
+  contentEn    String   @db.Text
+  avatarUrl    String?
+  isFeatured   Boolean  @default(false)
+  order        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("testimonials")
+}
+
+model Transformation {
+  id             String   @id @default(cuid())
+  titleAr        String
+  titleEn        String
+  descriptionAr  String   @db.Text
+  descriptionEn  String   @db.Text
+  imageUrl       String?
+  order          Int      @default(0)
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("transformations")
+  @@index([isActive, order])
+}
+
+model Settings {
+  id                  String   @id @default(cuid())
+  logoUrl              String?
+  contactEmail         String
+  contactPhone         String?
+  socialLinks          Json?    // { facebook?, twitter?, linkedin?, instagram? }
+  paymobApiKey         String?
+  paymobIntegrationId  String?
+  paymobHmacSecret     String?
+  paymobIframeId       String?
+  emailFrom            String?
+  emailProvider        String?
+  coachBioAr           String?  @db.Text
+  coachBioEn           String?  @db.Text
+  experienceYears      Int?
+  certifications       String?  @db.Text
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  @@map("settings")
+}
