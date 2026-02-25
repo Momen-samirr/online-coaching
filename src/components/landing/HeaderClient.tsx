@@ -7,7 +7,13 @@ import React from "react";
 import { Button } from "../ui/button";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 
-export default function HeaderClient({ user }: { user: boolean }) {
+export default function HeaderClient({
+  user,
+  isAdmin = false,
+}: {
+  user: boolean;
+  isAdmin?: boolean;
+}) {
   const t = useTranslations("nav");
   return (
     <>
@@ -67,12 +73,32 @@ export default function HeaderClient({ user }: { user: boolean }) {
         ) : (
           <>
             <Link href="/dashboard">
-              <Button variant="ghost" size="sm" className="cursor-pointer">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="cursor-pointer transition-colors hover:bg-muted/80 active:scale-[0.98]"
+              >
                 {t("dashboard")}
               </Button>
             </Link>
+            {isAdmin && (
+              <Link href="/admin">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="cursor-pointer transition-colors hover:bg-primary/10 hover:text-primary active:scale-[0.98]"
+                  aria-label={t("admin")}
+                >
+                  {t("admin")}
+                </Button>
+              </Link>
+            )}
             <SignOutButton>
-              <Button variant="default" size="sm" className="cursor-pointer">
+              <Button
+                variant="default"
+                size="sm"
+                className="cursor-pointer transition-colors active:scale-[0.98]"
+              >
                 {t("logout")}
               </Button>
             </SignOutButton>

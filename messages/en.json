@@ -13,6 +13,7 @@
     "signIn": "Login",
     "logout": "Logout",
     "dashboard": "Dashboard",
+    "admin": "Admin",
     "bookings": "Sessions"
   },
   "hero": {

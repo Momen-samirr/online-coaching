@@ -2,6 +2,8 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { prisma } from "../prisma";
 
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+
 export async function syncUser() {
   try {
     const user = await currentUser();
@@ -10,10 +12,19 @@ export async function syncUser() {
     const email = user.emailAddresses[0]?.emailAddress;
     if (!email) return;
 
+    const isEnvAdmin = typeof ADMIN_EMAIL === "string" && ADMIN_EMAIL === email;
+
     const existingByClerkId = await prisma.user.findUnique({
       where: { clerkId: user.id },
     });
     if (existingByClerkId) {
+      if (isEnvAdmin && existingByClerkId.role !== "ADMIN") {
+        await prisma.user.update({
+          where: { id: existingByClerkId.id },
+          data: { role: "ADMIN" },
+        });
+        return prisma.user.findUniqueOrThrow({ where: { id: existingByClerkId.id } });
+      }
       return existingByClerkId;
     }
 
@@ -28,6 +39,7 @@ export async function syncUser() {
           firstName: user.firstName ?? undefined,
           lastName: user.lastName ?? undefined,
           phone: user.phoneNumbers[0]?.phoneNumber ?? undefined,
+          ...(isEnvAdmin ? { role: "ADMIN" as const } : {}),
         },
       });
       return prisma.user.findUniqueOrThrow({ where: { id: existingByEmail.id } });
@@ -40,6 +52,7 @@ export async function syncUser() {
         lastName: user.lastName ?? undefined,
         email,
         phone: user.phoneNumbers[0]?.phoneNumber ?? undefined,
+        ...(isEnvAdmin ? { role: "ADMIN" as const } : {}),
       },
     });
   } catch (error) {

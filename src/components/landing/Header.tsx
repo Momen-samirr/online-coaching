@@ -1,16 +1,17 @@
-import { SignInButton, SignOutButton, SignUpButton } from "@clerk/nextjs";
 import Image from "next/image";
 import React from "react";
-import { Button } from "../ui/button";
 import { currentUser } from "@clerk/nextjs/server";
 import { Link } from "@/i18n/navigation";
-import { useTranslations } from "next-intl";
 import HeaderClient from "./HeaderClient";
+import { getIsAdmin } from "@/lib/auth-admin";
 
 const Header = async () => {
-  const user = await currentUser();
+  const [user, isAdmin] = await Promise.all([
+    currentUser(),
+    getIsAdmin(),
+  ]);
   return (
-    <div className="fixed top-0 right-0 left-0 z-[100] border-b border-border/70 bg-background/80 h-16">
+    <div className="fixed top-0 right-0 left-0 z-[100] border-b border-border/70 bg-background/80 h-16 backdrop-blur-sm">
       <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3">
           <Image
@@ -22,7 +23,7 @@ const Header = async () => {
           />
           <span className="font-semibold">Coaching</span>
         </Link>
-        <HeaderClient user={!!user} />
+        <HeaderClient user={!!user} isAdmin={!!isAdmin} />
       </div>
     </div>
   );

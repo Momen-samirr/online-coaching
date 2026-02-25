@@ -1,6 +1,6 @@
-import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import AdminLayoutClient from "@/components/admin/AdminLayoutClient";
+import { getAdminContext } from "@/lib/auth-admin";
 
 export default async function AdminLayout({
   children,
@@ -10,13 +10,8 @@ export default async function AdminLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const user = await currentUser();
-  if (!user) redirect(`/${locale}`);
-
-  const adminEmail = process.env.ADMIN_EMAIL;
-  if (user.emailAddresses[0]?.emailAddress !== adminEmail) {
-    redirect(`/${locale}/dashboard`);
-  }
+  const adminContext = await getAdminContext();
+  if (!adminContext) redirect(`/${locale}/dashboard`);
 
   return (
     <AdminLayoutClient locale={locale}>
